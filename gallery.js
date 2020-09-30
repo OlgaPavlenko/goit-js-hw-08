@@ -15,22 +15,9 @@ galleryItemsContainer.insertAdjacentHTML('beforeend', galleryItemsMarkup);
 
 galleryItemsContainer.addEventListener('click', onGalleryItemsClick);
 
-galleryItemsContainer.addEventListener(
-  'click',
-  openModalWindowOnGalleryItemsClick,
-);
+closeModalWindowElement.addEventListener('click', closeModalWindow);
 
-closeModalWindowElement.addEventListener(
-  'click',
-  closeModalWindowOnCloseItemClick,
-);
-
-closeModalWindowOverlayElement.addEventListener(
-  'click',
-  closeModalWindowOnOverayElemClick,
-);
-
-document.addEventListener('keydown', closeModalWindowEsc);
+closeModalWindowOverlayElement.addEventListener('click', closeModalWindow);
 
 function createGalleryItemsMarkup(galleryItems) {
   return galleryItems
@@ -63,32 +50,20 @@ function onGalleryItemsClick(e) {
   }
 
   changeSrcModalWindowOpen.src = e.target.dataset.source;
-
-  return;
-}
-
-function openModalWindowOnGalleryItemsClick(e) {
   modalWindowOpen.classList.add('is-open');
+  document.addEventListener('keydown', closeModalWindowEsc);
   return;
 }
 
-function closeModalWindowOnCloseItemClick(e) {
+function closeModalWindow(e) {
   modalWindowOpen.classList.remove('is-open');
   changeSrcModalWindowOpen.src = '';
-
-  return;
-}
-
-function closeModalWindowOnOverayElemClick(e) {
-  modalWindowOpen.classList.remove('is-open');
-  changeSrcModalWindowOpen.src = '';
-
+  document.removeEventListener('keydown', closeModalWindowEsc);
   return;
 }
 
 function closeModalWindowEsc(e) {
   if (e.keyCode == 27) {
-    modalWindowOpen.classList.remove('is-open');
-    changeSrcModalWindowOpen.src = '';
+    closeModalWindow();
   }
 }
